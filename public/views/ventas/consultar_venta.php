@@ -42,6 +42,8 @@
                                     <td><?php echo $venta['nombre']; ?></td>
                                     <td><?php echo $venta['ci']; ?></td>
                                     <td>
+                                        <a class="btn btn-primary" href="#modalMostrar" role="button" data-placement="top" title="Ver Recibo de Venta" data-toggle="modal" onclick="obtener_producto_recibo(<?php echo $venta['id_compra'] ?>)"><span class="fa fa-shopping-cart"></span>
+                                        </a>
                                         <a class="btn btn-success" href="#modalEditar" role="button" data-placement="top" title="Imprimir Recibo" data-toggle="modal" onclick="obtener_datos(<?php echo $venta['id_compra'] ?>)"><span class="fa fa-print"></span>
                                         </a>
                                         <a class="btn btn-danger" href="#modalEliminar" role="button" data-toggle="modal" data-placement="top" title="Eliminar" onclick="eliminar_datos(<?php echo $venta['id_compra'] ?>)"><span class="fa fa-trash-o"></span>
@@ -60,6 +62,7 @@
 </div>
 <?php //require_once 'modal_editar.php'; ?>
 <?php require_once 'modal_eliminar.php'; ?>
+<?php require_once 'modal_ver_recibo_venta.php'; ?>
 <script>
 
     $(document).ready(function() {
@@ -84,10 +87,24 @@
             }
         });
     }
+
+    function obtener_producto_recibo(id){
+        $.ajax({
+            url: '../../models/cliente/datos_cliente.php',
+            type: 'POST',
+            dataType: "json",
+            data: {id: id},
+            success: function(datos){
+                $("#name").val(datos['cliente']['nombre']);
+                $("#ci").val(datos['cliente']['ci']);
+                $("#id").val(datos['cliente']['id_cliente']);
+            }
+        });
+    }
     function eliminar_datos(id){
 
         fecha = document.getElementById("fechaConsulta").value;       
-        console.log('datos a eliminar-> '+id + " - "+fecha);
+        //console.log('datos a eliminar-> '+id + " - "+fecha);
         $("#id_eliminar").val(id);
         $("#fecha").val(fecha);        
     }
